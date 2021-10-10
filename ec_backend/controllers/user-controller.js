@@ -8,11 +8,11 @@ const cloudinary = require('cloudinary');
 
 // Register a User
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
-  // const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-  //   folder: 'avatars',
-  //   width: 150,
-  //   crop: 'scale',
-  // });
+  const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+    folder: 'avatars',
+    width: 150,
+    crop: 'scale',
+  });
 
   const { name, email, password } = req.body;
 
@@ -21,10 +21,8 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     email,
     password,
     avatar: {
-      // public_id: myCloud.public_id,
-      // url: myCloud.secure_url,
-      public_id: 'myCloud.public_id',
-      url: 'myCloud.secure_url',
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
     },
   });
 
@@ -187,19 +185,17 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
 
     const imageId = user.avatar.public_id;
 
-    // await cloudinary.v2.uploader.destroy(imageId);
+    await cloudinary.v2.uploader.destroy(imageId);
 
-    // const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-    //   folder: 'avatars',
-    //   width: 150,
-    //   crop: 'scale',
-    // });
+    const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+      folder: 'avatars',
+      width: 150,
+      crop: 'scale',
+    });
 
     newUserData.avatar = {
-      // public_id: myCloud.public_id,
-      // url: myCloud.secure_url,
-      public_id: 'myCloud.public_id',
-      url: 'myCloud.secure_url',
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
     };
   }
 
@@ -277,7 +273,7 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
 
   const imageId = user.avatar.public_id;
 
-  // await cloudinary.v2.uploader.destroy(imageId);
+  await cloudinary.v2.uploader.destroy(imageId);
 
   await user.remove();
 
